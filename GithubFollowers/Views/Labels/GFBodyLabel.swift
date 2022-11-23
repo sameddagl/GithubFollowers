@@ -12,22 +12,21 @@ class GFBodyLabel: UILabel {
     override init(frame: CGRect) {
         super.init(frame: frame)
     }
-    init(text: String) {
+    init(alignment: NSTextAlignment ,text: String) {
         super.init(frame: .zero)
-        configure(text: text)
+        configure(alignment: alignment, text: text)
     }
-    
-    
-    private func configure(text: String) {
+
+    private func configure(alignment: NSTextAlignment, text: String) {
         translatesAutoresizingMaskIntoConstraints = false
         
         font = .preferredFont(forTextStyle: .body)
         
         adjustsFontSizeToFitWidth = true
-        minimumScaleFactor = 0.6
+        minimumScaleFactor = 0.7
         
         self.text = text
-        textAlignment = .center
+        textAlignment = alignment
         
         textColor = .label
         

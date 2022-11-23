@@ -7,15 +7,18 @@
 
 import UIKit
 
+protocol FollowersListVCDelegate: AnyObject {
+    func didRequestFollowes(with username: String)
+}
+
 class FollowersListVC: UIViewController {
     enum Section {
         case main
     }
     var collectionView: UICollectionView!
-    //var searchController: UISearchController!
     var dataSource: UICollectionViewDiffableDataSource<Section, Follower>!
     
-    var name: String!
+    var username: String!
     var followers = [Follower]()
     var filteredFollowers = [Follower]()
     
@@ -35,9 +38,34 @@ class FollowersListVC: UIViewController {
     }
     
     private func configureNavController() {
-        title = name
+        title = username
         navigationController?.setNavigationBarHidden(false, animated: true)
         navigationController?.navigationBar.prefersLargeTitles = true
+        
+        let favoritesButton = UIBarButtonItem(image: UIImage(systemName: SFSymbols.bookmark), style: .done, target: self, action: #selector(saveTapped))
+        let getInfoButton = UIBarButtonItem(image: UIImage(systemName: SFSymbols.info), style: .done, target: self, action: #selector(getUserInfoTapped))
+        
+        navigationItem.rightBarButtonItems = [getInfoButton, favoritesButton]
+    }
+    
+    @objc func saveTapped() {
+        print("Save tapped")
+    }
+    
+    @objc func getUserInfoTapped() {
+        getUsersInfo(username: self.username)
+    }
+    
+    func getUsersInfo(username: String) {
+        let vc = UserInfoVC()
+        vc.delegate = self
+        vc.username = username
+        let navControlller = UINavigationController(rootViewController: vc)
+        let appereance = UINavigationBarAppearance()
+        appereance.configureWithDefaultBackground()
+        navControlller.navigationBar.standardAppearance = appereance
+        navControlller.navigationBar.scrollEdgeAppearance = appereance
+        present(navControlller, animated: true)
     }
     
     private func configureSearchController() {
@@ -52,13 +80,14 @@ class FollowersListVC: UIViewController {
     private func configureCollectionView() {
         collectionView = UICollectionView(frame: view.bounds, collectionViewLayout: UIHelper.createThreeColumnFlowLayout(view: view))
         collectionView.delegate = self
+        collectionView.scrollsToTop = true
         view.addSubview(collectionView)
         collectionView.register(GFFollowerCell.self, forCellWithReuseIdentifier: "cell")
     }
     
     private func getFollowers(page: Int) {
         presentLoadingScreen()
-        NetworkManager.shared.getFollowers(username: name, page: page) { [weak self] result in
+        NetworkManager.shared.getFollowers(username: self.username, page: page) { [weak self] result in
             guard let self = self else {return}
             self.dismissLoadingScreen()
             switch result {
@@ -75,7 +104,7 @@ class FollowersListVC: UIViewController {
                 self.followers.append(contentsOf: newFollowers)
                 self.updateData(on: self.followers)
             case .failure(let error):
-                self.presentAlert(title: "An error occyred", message: error.rawValue, buttonTitle: "Okay")
+                self.presentAlert(title: "An error occured", message: error.rawValue, buttonTitle: "Okay")
             }
         }
     }
@@ -103,8 +132,7 @@ extension FollowersListVC: UICollectionViewDelegate {
         let contentHeight = scrollView.contentSize.height
         let offset = scrollView.contentOffset.y
         
-        if height + offset > contentHeight, hasMoreFollowers && canLoadMoreFollowers {
-            print(canLoadMoreFollowers)
+        if height + offset > contentHeight, hasMoreFollowers {
             currentPage += 1
             print("get \(currentPage)")
             getFollowers(page: currentPage)
@@ -113,14 +141,7 @@ extension FollowersListVC: UICollectionViewDelegate {
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let currentFollowers = isSearching ? filteredFollowers : followers
-        let vc = UserInfoVC()
-        vc.username = currentFollowers[indexPath.row].login
-        let navControlller = UINavigationController(rootViewController: vc)
-        let appereance = UINavigationBarAppearance()
-        appereance.configureWithDefaultBackground()
-        navControlller.navigationBar.standardAppearance = appereance
-        navControlller.navigationBar.scrollEdgeAppearance = appereance
-        present(navControlller, animated: true)
+        getUsersInfo(username: currentFollowers[indexPath.row].login)
     }
 }
 
@@ -134,8 +155,20 @@ extension FollowersListVC: UISearchResultsUpdating, UISearchBarDelegate {
         }
         
         isSearching = true
-        canLoadMoreFollowers = false
         filteredFollowers = followers.filter { $0.login.lowercased().contains(filter.lowercased()) }
         updateData(on: filteredFollowers)
     }
+}
+
+extension FollowersListVC: FollowersListVCDelegate {
+    func didRequestFollowes(with username: String) {
+        self.username = username
+        title = username
+        currentPage = 1
+        followers.removeAll()
+        getFollowers(page: currentPage)
+        collectionView.scrollToItem(at: IndexPath(row: 0, section: 0), at: .top, animated: false)
+
+    }
+ 
 }

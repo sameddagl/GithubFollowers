@@ -11,11 +11,10 @@ class NetworkManager {
     static let shared = NetworkManager()
     
     private let cache = NSCache<NSString, UIImage>()
-    private let baseURL = "https://api.github.com/"
-    private let searchBaseUrl = "https://api.github.com/search/users?q=same"
+    private let baseURL = "https://api.github.com"
     
     func getFollowers(username: String, page: Int, completion: @escaping(Result<[Follower], ErrorMessage>) -> Void) {
-        let endPoint = baseURL + "users/\(username)/followers?per_page=100&page=\(page)"
+        let endPoint = baseURL + "/users/\(username)/followers?per_page=100&page=\(page)"
         
         guard let url = URL(string: endPoint) else {
             completion(.failure(.invalidUsername))
@@ -48,11 +47,46 @@ class NetworkManager {
             
         }.resume()
     }
-    
-    func getProfileImage(user: Follower, completion: @escaping(UIImage?) -> Void) {
-        let url = URL(string: user.avatarURL)!
+    func getUserInfo(for username: String, completion: @escaping(Result<User, ErrorMessage>) -> Void) {
+        let endPoint = baseURL + "/users/\(username)"
+        print(endPoint)
         
-        let key = NSString(string: user.avatarURL)
+        guard let url = URL(string: endPoint) else {
+            completion(.failure(.invalidUsername))
+            return
+        }
+        
+        URLSession.shared.dataTask(with: url) { data, response, error in
+            if let _ = error {
+                completion(.failure(.unableToComplete))
+                return
+            }
+            
+            guard let response = response as? HTTPURLResponse, response.statusCode == 200 else {
+                completion(.failure(.invalidResponse))
+                return
+            }
+            
+            guard let data = data else {
+                completion(.failure(.invalidData))
+                return
+            }
+            
+            do {
+                let decodedData = try JSONDecoder().decode(User.self, from: data)
+                completion(.success(decodedData))
+            }
+            catch{
+                print(error)
+                completion(.failure(.decodingData))
+            }
+        }.resume()
+    }
+    
+    func getProfileImage(avatarURL: String, completion: @escaping(UIImage?) -> Void) {
+        let url = URL(string: avatarURL)!
+        
+        let key = NSString(string: avatarURL)
         
         if let image = cache.object(forKey: key) {
             completion(image)

@@ -8,7 +8,7 @@
 import UIKit
 
 class GFEmptyStateView: UIView {
-    let title = GFTitleLabel(fontSize: 30, title: "The user has no followers.\n Go follow him.")
+    let title = GFTitleLabel(alignment: .center, fontSize: 30, title: "The user has no followers.\n Go follow him.")
     let bgImageView = UIImageView()
     
     let padding: CGFloat = 20

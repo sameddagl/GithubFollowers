@@ -29,6 +29,7 @@ class GFTextField: UITextField {
         textAlignment = .center
         font = .preferredFont(forTextStyle: .headline)
         
+        returnKeyType = .search
         autocorrectionType = .no
         autocapitalizationType = .none
         

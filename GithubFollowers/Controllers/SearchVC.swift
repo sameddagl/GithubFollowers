@@ -20,6 +20,7 @@ class SearchVC: UIViewController {
     }
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        nameTextField.text = ""
         navigationController?.setNavigationBarHidden(true, animated: true)
     }
     
@@ -51,6 +52,7 @@ class SearchVC: UIViewController {
     func configureTextField() {
         view.addSubview(nameTextField)
         
+        
         NSLayoutConstraint.activate([
             nameTextField.topAnchor.constraint(equalTo: logoImageView.bottomAnchor, constant: 50),
             nameTextField.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 50),
@@ -75,7 +77,7 @@ class SearchVC: UIViewController {
     @objc func buttonTapped() {
         let vc = FollowersListVC()
         if let name = nameTextField.text, !name.isEmpty {
-            vc.name = name
+            vc.username = name
             navigationController?.pushViewController(vc, animated: true)
         }
         else {

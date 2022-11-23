@@ -9,7 +9,7 @@ import UIKit
 
 class GFFollowerCell: UICollectionViewCell {
     let avatarImageView = GFAvatarImage(frame: .zero)
-    let nameTitle = GFTitleLabel(fontSize: 15, title: "Null")
+    let nameTitle = GFTitleLabel(alignment: .center, fontSize: 15, title: "Null")
     
     let padding: CGFloat = 10
     
@@ -20,11 +20,7 @@ class GFFollowerCell: UICollectionViewCell {
     
     func set(_ follower: Follower) {
         nameTitle.text = follower.login
-        NetworkManager.shared.getProfileImage(user: follower) { [weak self] image in
-            DispatchQueue.main.async {
-                self?.avatarImageView.image = image
-            }
-        }
+        avatarImageView.set(avatarURL: follower.avatarURL)
     }
     
     private func configureImageView() {

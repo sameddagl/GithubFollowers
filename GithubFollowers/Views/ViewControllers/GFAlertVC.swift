@@ -10,8 +10,8 @@ import UIKit
 class GFAlertVC: UIViewController {
     let containerView = UIView()
     
-    let titleLabel = GFTitleLabel(fontSize: 20, title: "Error")
-    let messageLabel = GFBodyLabel(text: "An error occured")
+    let titleLabel = GFTitleLabel(alignment: .center, fontSize: 20, title: "Error")
+    let messageLabel = GFBodyLabel(alignment: .center, text: "An error occured")
     let dismissButton = GFButton(title: "Okay")
     
     let padding: CGFloat = 10

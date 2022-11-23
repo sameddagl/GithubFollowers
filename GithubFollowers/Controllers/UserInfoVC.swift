@@ -7,19 +7,119 @@
 
 import UIKit
 
+
+protocol UserInfoVCDelegate: AnyObject {
+    func didTapGitButton(for user: User)
+    func didTapGetFollowersButton(for user: User)
+}
+
 class UserInfoVC: UIViewController {
-    var username: String?
+    var username: String!
+    
+    let headerContainer = UIView()
+    let itemView1 = UIView()
+    let itemView2 = UIView()
+    let dateLabel = GFSecondaryTitleLabel(alignment: .center, fontSize: 15, title: "")
+    
+    var delegate: FollowersListVCDelegate!
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        configureUI()
+        getUserInfo()
+        layoutUI()
+        
+    }
+    private func configureUI() {
         view.backgroundColor = .systemBackground
         let rightButton = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(dismissVC))
         navigationItem.rightBarButtonItem = rightButton
-        print(username!)
+    }
+    
+    private func getUserInfo() {
+        presentLoadingScreen()
+        NetworkManager.shared.getUserInfo(for: username) { [weak self] result in
+            guard let self = self else { return }
+            self.dismissLoadingScreen()
+            switch result {
+            case .success(let user):
+                DispatchQueue.main.async {
+                    self.configureUIElements(user: user)
+                }
+            case .failure(let error):
+                print(error.rawValue)
+                self.presentAlert(title: "Something went wrong", message: "Unable to get info for \(String(describing: self.username!)). Please try again", buttonTitle: "Okay")
+            }
+        }
+    }
+    private func configureUIElements(user: User) {
+        let repoItemVC = GFRepoItemVC(user: user)
+        repoItemVC.delegate = self
+        
+        let followersItemVC = GFFollowersItemVC(user: user)
+        followersItemVC.delegate = self
+        
+        self.add(childVC: GFUserInfoHeaderVC(user: user), to: self.headerContainer)
+        self.add(childVC: repoItemVC, to: self.itemView1)
+        self.add(childVC: followersItemVC, to: self.itemView2)
+        self.dateLabel.text = "Created at \(user.createdAt.convertToDisplayFormat())"
+    }
+    private func layoutUI() {
+        let padding: CGFloat = 20
+        let itemSpacing: CGFloat = 30
+
+        
+        for item in [headerContainer, itemView1, itemView2, dateLabel] {
+            view.addSubview(item)
+            item.translatesAutoresizingMaskIntoConstraints = false
+            NSLayoutConstraint.activate([
+                item.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: padding),
+                item.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -padding)
+            ])
+        }
+        view.addSubview(headerContainer)
+        headerContainer.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            headerContainer.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: padding),
+            headerContainer.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.2),
+            
+            itemView1.topAnchor.constraint(equalTo: headerContainer.bottomAnchor, constant: itemSpacing),
+            itemView1.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.25),
+            
+            itemView2.topAnchor.constraint(equalTo: itemView1.bottomAnchor, constant: itemSpacing),
+            itemView2.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.25),
+            
+            dateLabel.topAnchor.constraint(equalTo: itemView2.bottomAnchor, constant: 10),
+        ])
+    }
+    
+    private func add(childVC: UIViewController, to containerView: UIView) {
+        self.addChild(childVC)
+        containerView.addSubview(childVC.view)
+        childVC.view.frame = containerView.bounds
+        childVC.didMove(toParent: self)
+   
     }
     @objc func dismissVC() {
         dismiss(animated: true)
     }
+}
 
+extension UserInfoVC: UserInfoVCDelegate {
+    func didTapGitButton(for user: User) {
+        guard let url = URL(string: user.htmlURL) else {
+            presentAlert(title: "Invalid url", message: "The url attached to the user is invalid.", buttonTitle: "Okay")
+            return
+        }
+        presentSafariVC(with: url)
 
+        
+    }
+    
+    func didTapGetFollowersButton(for user: User) {
+        dismiss(animated: true)
+        delegate.didRequestFollowes(with: user.login)
+    }
+    
+    
 }

@@ -6,6 +6,8 @@
 //
 
 import UIKit
+import SafariServices
+
 fileprivate var containerView: UIView!
 
 extension UIViewController {
@@ -18,11 +20,17 @@ extension UIViewController {
         }
     }
     
+    func presentSafariVC(with url: URL) {
+        let safariVC = SFSafariViewController(url: url)
+        safariVC.preferredControlTintColor = .systemGreen
+        present(safariVC, animated: true)
+    }
+    
     func presentLoadingScreen() {
         containerView = UIView(frame: view.bounds)
         view.addSubview(containerView)
 
-        containerView.backgroundColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.3)
+        containerView.backgroundColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.1)
         
         let activityIndicator = UIActivityIndicatorView(style: .medium)
         activityIndicator.translatesAutoresizingMaskIntoConstraints = false
