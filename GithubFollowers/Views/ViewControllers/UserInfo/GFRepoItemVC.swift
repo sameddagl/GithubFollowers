@@ -7,23 +7,18 @@
 
 import UIKit
 
-class GFRepoItemVC: UIViewController {
+class GFRepoItemVC: GFItemInfoVC {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        // Do any additional setup after loading the view.
+        
+        infoView1.set(infoType: .repos, count: user.publicRepos)
+        infoView2.set(infoType: .gists, count: user.publicGists)
+        button.set(title: "Go github page", backgroundColor: .systemBlue)
     }
     
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
+    override func buttonTapped() {
+        delegate.didTapGitButton(for: user)
     }
-    */
 
 }

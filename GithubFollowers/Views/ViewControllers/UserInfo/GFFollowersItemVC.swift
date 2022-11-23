@@ -7,23 +7,19 @@
 
 import UIKit
 
-class GFFollowersItemVC: UIViewController {
+class GFFollowersItemVC: GFItemInfoVC {
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        // Do any additional setup after loading the view.
+        infoView1.set(infoType: .followers, count: user.followers)
+        infoView2.set(infoType: .following, count: user.following)
+        button.set(title: "Go github page", backgroundColor: .systemGreen)
     }
     
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
+    override func buttonTapped() {
+        delegate.didTapGetFollowersButton(for: user)
     }
-    */
+
 
 }
