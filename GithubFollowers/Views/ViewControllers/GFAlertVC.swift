@@ -22,8 +22,13 @@ class GFAlertVC: UIViewController {
     
     init(title: String, message: String, buttonTitle: String) {
         super.init(nibName: nil, bundle: nil)
+        
+        titleLabel.text = title
+        messageLabel.text = message
+        dismissButton.setTitle(buttonTitle, for: .normal)
+        
         configureContainerView()
-        configureElements(title: title, message: message, buttonTitle: buttonTitle)
+        configureElements()
     }
     
     
@@ -44,14 +49,10 @@ class GFAlertVC: UIViewController {
         ])
     }
     
-    private func configureElements(title: String, message: String, buttonTitle: String) {
+    private func configureElements() {
         containerView.addSubview(titleLabel)
         containerView.addSubview(messageLabel)
         containerView.addSubview(dismissButton)
-        
-        titleLabel.text = title
-        messageLabel.text = message
-        dismissButton.setTitle(buttonTitle, for: .normal)
         
         dismissButton.backgroundColor = .systemPink
         dismissButton.addTarget(self, action: #selector(dismissAlertVC), for: .touchUpInside)

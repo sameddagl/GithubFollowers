@@ -17,7 +17,7 @@ struct User: Codable {
     let blog: String?
     let bio, twitterUsername: String?
     let publicRepos, publicGists, followers, following: Int
-    let createdAt: String
+    let createdAt: Date
     
     enum CodingKeys: String, CodingKey {
         case login, id

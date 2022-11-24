@@ -52,10 +52,7 @@ class GFItemInfoVC: UIViewController {
         ])
     }
     
-    @objc func buttonTapped() {
-
-        
-    }
+    @objc func buttonTapped() {}
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")

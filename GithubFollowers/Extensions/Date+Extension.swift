@@ -13,13 +13,5 @@ extension Date {
         formatter.dateFormat = "MMM, yyyy"
         formatter.locale = Locale(identifier: "en_US_POSIX")
         return formatter.string(from: self)
-        
-//        if #available(iOS 15.0, *) {
-//            let convertedDate = formatted(.dateTime.month(.wide).year(.defaultDigits))
-//            return String(convertedDate)
-//
-//        } else {
-//
-//        }
     }
 }

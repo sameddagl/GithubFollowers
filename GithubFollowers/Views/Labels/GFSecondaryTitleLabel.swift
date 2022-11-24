@@ -11,34 +11,27 @@ class GFSecondaryTitleLabel: UILabel {
 
     override init(frame: CGRect) {
         super.init(frame: frame)
+        configure()
     }
-    init(alignment: NSTextAlignment, fontSize: CGFloat, title: String) {
-        super.init(frame: .zero)
-        configure(alignment: alignment, fontSize: fontSize ,title: title)
+    convenience init(alignment: NSTextAlignment, fontSize: CGFloat, title: String) {
+        self.init(frame: .zero)
+        self.textAlignment = alignment
+        self.font = .systemFont(ofSize: fontSize, weight: .medium)
+        self.text = title
     }
     
-    
-    private func configure(alignment: NSTextAlignment, fontSize: CGFloat, title: String) {
+    private func configure() {
         translatesAutoresizingMaskIntoConstraints = false
-        
-        font = .systemFont(ofSize: fontSize, weight: .medium)
         
         adjustsFontSizeToFitWidth = true
         minimumScaleFactor = 0.8
         
-        text = title
         textColor = .secondaryLabel
         
-        textAlignment = alignment
-        
         lineBreakMode = .byTruncatingTail
-        
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
-    
-
 }

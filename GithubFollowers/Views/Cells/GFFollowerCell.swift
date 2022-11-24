@@ -20,7 +20,11 @@ class GFFollowerCell: UICollectionViewCell {
     
     func set(_ follower: Follower) {
         nameTitle.text = follower.login
-        avatarImageView.set(avatarURL: follower.avatarURL)
+        NetworkManager.shared.getProfileImage(avatarURL: follower.avatarURL) { [weak self] image in
+            DispatchQueue.main.async {
+                self?.avatarImageView.image = image
+            }
+        }
     }
     
     private func configureImageView() {

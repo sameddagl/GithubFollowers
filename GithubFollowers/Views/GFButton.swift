@@ -11,30 +11,26 @@ class GFButton: UIButton {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        configure(title: "")
+        configure()
     }
     
-    init(title: String) {
-        super.init(frame: .zero)
-        configure(title: title)
+    convenience init(title: String) {
+        self.init(frame: .zero)
+        self.setTitle(title, for: .normal)
     }
     func set(title: String, backgroundColor: UIColor) {
         setTitle(title, for: .normal)
         self.backgroundColor = backgroundColor
     }
     
-    private func configure(title: String) {
+    private func configure() {
         translatesAutoresizingMaskIntoConstraints = false
         
         backgroundColor = .systemGreen
         
         layer.cornerRadius = 10
         
-        
-        setTitle(title, for: .normal)
         titleLabel?.font = .preferredFont(forTextStyle: .headline)
-        
-        
     }
     
     required init?(coder: NSCoder) {

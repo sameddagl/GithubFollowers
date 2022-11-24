@@ -11,36 +11,30 @@ class GFTitleLabel: UILabel {
 
     override init(frame: CGRect) {
         super.init(frame: frame)
-    }
-    init(alignment: NSTextAlignment, fontSize: CGFloat, title: String) {
-        super.init(frame: .zero)
-        self.textAlignment = textAlignment
-        configure(alignment: alignment, fontSize: fontSize ,title: title)
+        configure()
+
     }
     
+    convenience init(alignment: NSTextAlignment, fontSize: CGFloat, title: String) {
+        self.init(frame: .zero)
+        self.textAlignment = alignment
+        self.font = .systemFont(ofSize: fontSize, weight: .bold)
+        self.text = title
+    }
     
-    private func configure(alignment: NSTextAlignment, fontSize: CGFloat, title: String) {
+    private func configure() {
         translatesAutoresizingMaskIntoConstraints = false
-        
-        font = .systemFont(ofSize: fontSize, weight: .bold)
-        
+                
         adjustsFontSizeToFitWidth = true
         minimumScaleFactor = 0.7
-        
-        text = title
-        textAlignment = alignment
         
         textColor = .label
         
         numberOfLines = 1
-        
         
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
-    
-
 }

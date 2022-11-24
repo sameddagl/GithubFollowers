@@ -22,7 +22,10 @@ class GFUserInfoHeaderVC: UIViewController {
         self.user = user
         configure()
         configureInfos()
-        
+    }
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
     }
     
     private func configure() {
@@ -74,7 +77,7 @@ class GFUserInfoHeaderVC: UIViewController {
     }
     
     private func configureInfos() {
-        avatarImageView.set(avatarURL: user.avatarURL)
+        getAvatarImage()
         usernameLabel.text = user.login
         nameLabel.text = user.name ?? ""
         locationImageView.image = UIImage(systemName: SFSymbols.location)
@@ -82,14 +85,12 @@ class GFUserInfoHeaderVC: UIViewController {
         bioLabel.text = user.bio ?? "No bio available"
     }
     
-    
-    
-    
-    
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-
+    private func getAvatarImage() {
+        NetworkManager.shared.getProfileImage(avatarURL: user.avatarURL) { [weak self] image in
+            DispatchQueue.main.async {
+                self?.avatarImageView.image = image
+            }
+        }
     }
     
     required init?(coder: NSCoder) {

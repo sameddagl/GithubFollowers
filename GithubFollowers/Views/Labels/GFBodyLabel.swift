@@ -11,28 +11,25 @@ class GFBodyLabel: UILabel {
 
     override init(frame: CGRect) {
         super.init(frame: frame)
+        configure()
     }
-    init(alignment: NSTextAlignment ,text: String) {
-        super.init(frame: .zero)
-        configure(alignment: alignment, text: text)
+    convenience init(alignment: NSTextAlignment ,text: String) {
+        self.init(frame: .zero)
+        self.textAlignment = alignment
+        self.font = .preferredFont(forTextStyle: .body)
     }
 
-    private func configure(alignment: NSTextAlignment, text: String) {
+    private func configure() {
         translatesAutoresizingMaskIntoConstraints = false
-        
-        font = .preferredFont(forTextStyle: .body)
         
         adjustsFontSizeToFitWidth = true
         minimumScaleFactor = 0.7
         
         self.text = text
-        textAlignment = alignment
         
         textColor = .label
         
-        numberOfLines = 0
-        
-        
+        numberOfLines = 0        
     }
     
     required init?(coder: NSCoder) {

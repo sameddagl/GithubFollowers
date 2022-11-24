@@ -11,10 +11,9 @@ protocol FollowersListVCDelegate: AnyObject {
     func didRequestFollowers(with username: String)
 }
 
-class FollowersListVC: UIViewController {
-    enum Section {
-        case main
-    }
+class FollowersListVC: GFDataLoadingVC {
+    enum Section { case main }
+    
     var collectionView: UICollectionView!
     var dataSource: UICollectionViewDiffableDataSource<Section, Follower>!
     
@@ -204,7 +203,5 @@ extension FollowersListVC: FollowersListVCDelegate {
         followers.removeAll()
         getFollowers(page: currentPage)
         collectionView.scrollToItem(at: IndexPath(row: 0, section: 0), at: .top, animated: false)
-
-    }
- 
+    } 
 }

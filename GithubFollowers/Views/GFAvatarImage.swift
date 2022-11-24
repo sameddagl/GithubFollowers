@@ -17,13 +17,6 @@ class GFAvatarImage: UIImageView {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    func set(avatarURL: String) {
-        NetworkManager.shared.getProfileImage(avatarURL: avatarURL) { [weak self] image in
-            DispatchQueue.main.async {
-                self?.image = image
-            }
-        }
-    }
     
     private func configure() {
         translatesAutoresizingMaskIntoConstraints = false

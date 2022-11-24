@@ -73,7 +73,9 @@ class NetworkManager {
             }
             
             do {
-                let decodedData = try JSONDecoder().decode(User.self, from: data)
+                let decoder = JSONDecoder()
+                decoder.dateDecodingStrategy = .iso8601
+                let decodedData = try decoder.decode(User.self, from: data)
                 completion(.success(decodedData))
             }
             catch{
@@ -93,27 +95,17 @@ class NetworkManager {
             return
         }
         
-        URLSession.shared.dataTask(with: url) { data, response, error in
-            if error != nil {
-                print("error")
-                return
-            }
+        URLSession.shared.dataTask(with: url) { [weak self] data, response, error in
+            if error != nil { return }
             
-            guard let response = response as? HTTPURLResponse, response.statusCode == 200 else {
-                print("response error")
-                return
-            }
+            guard let response = response as? HTTPURLResponse, response.statusCode == 200 else { return }
             
-            guard let data = data else {
-                print("data error")
-                return
-            }
+            guard let data = data else { return }
             
             let image = UIImage(data: data)
-            
-            self.cache.setObject(image!, forKey: key)
-            
+            self?.cache.setObject(image!, forKey: key)
             completion(image)
+            
         }.resume()
     }
 }
