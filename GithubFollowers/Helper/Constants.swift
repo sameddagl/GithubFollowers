@@ -7,7 +7,7 @@
 
 import UIKit
 
-struct SFSymbols {
+enum SFSymbols {
     static let location = "mappin.and.ellipse"
     static let repo = "folder.fill"
     static let gists = "text.alignleft"
@@ -16,6 +16,12 @@ struct SFSymbols {
     static let bookmark = "bookmark"
     static let bookmarkFill = "bookmark.fill"
     static let info = "info.circle"
+}
+
+enum Images {
+    static let logoImage = UIImage(named: "gh-logo")
+    static let emptyStateImage = UIImage(named: "empty-state-logo")
+    static let placeHolderImage = UIImage(named: "avatar-place-holder")
 }
 
 enum ScreenSize {

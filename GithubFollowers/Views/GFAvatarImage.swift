@@ -29,7 +29,7 @@ class GFAvatarImage: UIImageView {
         translatesAutoresizingMaskIntoConstraints = false
         contentMode = .scaleAspectFill
         
-        image = UIImage(named: "avatar-place-holder")
+        image = Images.placeHolderImage
         
         layer.cornerRadius = 10
         layer.masksToBounds = true

@@ -35,7 +35,7 @@ class GFEmptyStateView: UIView {
         
         title.textColor = .tertiaryLabel
         title.numberOfLines = 2
-        bgImageView.image = UIImage(named: "empty-state-logo")
+        bgImageView.image = Images.emptyStateImage
         
         NSLayoutConstraint.activate([
             title.topAnchor.constraint(equalTo: topAnchor, constant: 50),

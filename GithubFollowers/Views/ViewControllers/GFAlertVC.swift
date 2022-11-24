@@ -14,11 +14,10 @@ class GFAlertVC: UIViewController {
     let messageLabel = GFBodyLabel(alignment: .center, text: "An error occured")
     let dismissButton = GFButton(title: "Okay")
     
-    let padding: CGFloat = 10
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.5)
+        view.backgroundColor = UIColor.black.withAlphaComponent(0.75)
     }
     
     init(title: String, message: String, buttonTitle: String) {
@@ -57,6 +56,8 @@ class GFAlertVC: UIViewController {
         dismissButton.backgroundColor = .systemPink
         dismissButton.addTarget(self, action: #selector(dismissAlertVC), for: .touchUpInside)
         
+        let padding: CGFloat = 20
+        
         NSLayoutConstraint.activate([
             titleLabel.topAnchor.constraint(equalTo: containerView.topAnchor, constant: padding),
             titleLabel.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: padding),
@@ -64,8 +65,8 @@ class GFAlertVC: UIViewController {
             
             dismissButton.bottomAnchor.constraint(equalTo: containerView.bottomAnchor, constant: -padding),
             dismissButton.heightAnchor.constraint(equalTo: containerView.heightAnchor, multiplier: 0.2),
-            dismissButton.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: 50),
-            dismissButton.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -50),
+            dismissButton.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: 30),
+            dismissButton.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -30),
             
             messageLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: padding),
             messageLabel.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: padding),

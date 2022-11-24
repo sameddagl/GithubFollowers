@@ -103,8 +103,7 @@ extension FavoritesListVC: UITableViewDataSource, UITableViewDelegate {
 
 extension FavoritesListVC: FollowersListVCDelegate {
     func didRequestFollowers(with username: String) {
-        let vc = FollowersListVC()
-        vc.username = username
+        let vc = FollowersListVC(username: username)
         navigationController?.pushViewController(vc, animated: true)
     }
 }

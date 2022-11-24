@@ -27,7 +27,7 @@ class SearchVC: UIViewController {
     func configureUI() {
         nameTextField.delegate = self
         let recognizer = UITapGestureRecognizer(target: self, action: #selector(tappedOnScreen))
-        recognizer.cancelsTouchesInView = false
+        recognizer.cancelsTouchesInView = true
         view.addGestureRecognizer(recognizer)
         
         configureLogoImageView()
@@ -38,13 +38,14 @@ class SearchVC: UIViewController {
     func configureLogoImageView() {
         view.addSubview(logoImageView)
         logoImageView.translatesAutoresizingMaskIntoConstraints = false
+        logoImageView.image = Images.logoImage
         
-        logoImageView.image = UIImage(named: "gh-logo")
+        let topAnchor: CGFloat = DeviceTypes.isiPhoneSE || DeviceTypes.isiPhone8Zoomed ? 20 : 80
         
         NSLayoutConstraint.activate([
             logoImageView.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.6),
             logoImageView.heightAnchor.constraint(equalTo: logoImageView.widthAnchor),
-            logoImageView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 50),
+            logoImageView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: topAnchor),
             logoImageView.centerXAnchor.constraint(equalTo: view.centerXAnchor)
         ])
     }
@@ -75,9 +76,8 @@ class SearchVC: UIViewController {
     }
     
     @objc func buttonTapped() {
-        let vc = FollowersListVC()
         if let name = nameTextField.text, !name.isEmpty {
-            vc.username = name
+            let vc = FollowersListVC(username: name)
             navigationController?.pushViewController(vc, animated: true)
         }
         else {
@@ -94,7 +94,7 @@ extension SearchVC: UITextFieldDelegate {
         return true
     }
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        tappedOnScreen()
+        textField.resignFirstResponder()
         buttonTapped()
         return true
     }

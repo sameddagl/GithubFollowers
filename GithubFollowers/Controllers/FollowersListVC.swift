@@ -26,6 +26,17 @@ class FollowersListVC: UIViewController {
     var hasMoreFollowers = true
     var canLoadMoreFollowers = true
     var isSearching = false
+    
+    init(username: String) {
+        super.init(nibName: nil, bundle: nil)
+        self.username = username
+        title = username
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .systemBackground
@@ -38,7 +49,6 @@ class FollowersListVC: UIViewController {
     }
     
     private func configureNavController() {
-        title = username
         navigationController?.setNavigationBarHidden(false, animated: true)
         navigationController?.navigationBar.prefersLargeTitles = true
         

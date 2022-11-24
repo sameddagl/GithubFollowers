@@ -32,6 +32,7 @@ class GFTextField: UITextField {
         returnKeyType = .search
         autocorrectionType = .no
         autocapitalizationType = .none
+        clearButtonMode = .whileEditing
         
         self.placeholder = placeholder
         layer.borderWidth = 2
