@@ -51,10 +51,11 @@ class FavoritesListVC: GFDataLoadingVC {
     private func configureTableView() {
         tableView = UITableView(frame: view.bounds)
         view.addSubview(tableView)
+        
         tableView.rowHeight = 80
         tableView.dataSource = self
         tableView.delegate = self
-        tableView.separatorStyle = .none
+        tableView.removeExcessRows()
         
         tableView.register(GFFavoriteCell.self, forCellReuseIdentifier: GFFavoriteCell.reuseIdentifier)
         
@@ -92,11 +93,15 @@ extension FavoritesListVC: UITableViewDataSource, UITableViewDelegate {
         guard editingStyle == .delete else { return }
         
         let favToDelete = favorites[indexPath.row]
-        favorites.remove(at: indexPath.row)
-        tableView.deleteRows(at: [indexPath], with: .automatic)
+
         PersistanceManager.shared.updateWith(favorite: favToDelete, actionType: .remove) { [weak self] error in
-            guard let error = error else { return }
-            self?.presentAlert(title: "Something went wrong", message: error.rawValue, buttonTitle: "Okay")
+            guard let self = self else { return }
+            guard let error = error else {
+                self.favorites.remove(at: indexPath.row)
+                self.tableView.deleteRows(at: [indexPath], with: .automatic)
+                return
+            }
+            self.presentAlert(title: "Something went wrong", message: error.rawValue, buttonTitle: "Okay")
         }
     }
 }
