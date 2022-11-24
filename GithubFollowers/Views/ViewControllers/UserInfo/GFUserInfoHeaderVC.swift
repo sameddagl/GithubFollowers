@@ -23,7 +23,6 @@ class GFUserInfoHeaderVC: UIViewController {
         configure()
         configureInfos()
         
-        bioLabel.backgroundColor = .red
     }
     
     private func configure() {

@@ -15,6 +15,7 @@ protocol UserInfoVCDelegate: AnyObject {
 
 class UserInfoVC: UIViewController {
     var username: String!
+    var isTheUserItself = false
     
     let headerContainer = UIView()
     let itemView1 = UIView()
@@ -28,6 +29,7 @@ class UserInfoVC: UIViewController {
         configureUI()
         getUserInfo()
         layoutUI()
+        print(isTheUserItself)
         
     }
     private func configureUI() {
@@ -61,7 +63,9 @@ class UserInfoVC: UIViewController {
         
         self.add(childVC: GFUserInfoHeaderVC(user: user), to: self.headerContainer)
         self.add(childVC: repoItemVC, to: self.itemView1)
-        self.add(childVC: followersItemVC, to: self.itemView2)
+        if !isTheUserItself {
+            self.add(childVC: followersItemVC, to: self.itemView2)
+        }
         self.dateLabel.text = "Created at \(user.createdAt.convertToDisplayFormat())"
     }
     private func layoutUI() {
@@ -89,8 +93,15 @@ class UserInfoVC: UIViewController {
             itemView2.topAnchor.constraint(equalTo: itemView1.bottomAnchor, constant: itemSpacing),
             itemView2.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.25),
             
-            dateLabel.topAnchor.constraint(equalTo: itemView2.bottomAnchor, constant: 10),
         ])
+        if !isTheUserItself
+        {
+            dateLabel.topAnchor.constraint(equalTo: itemView2.bottomAnchor, constant: 10).isActive = true
+        }
+        else
+        {
+            dateLabel.topAnchor.constraint(equalTo: itemView1.bottomAnchor, constant: 10).isActive = true
+        }
     }
     
     private func add(childVC: UIViewController, to containerView: UIView) {
@@ -118,7 +129,7 @@ extension UserInfoVC: UserInfoVCDelegate {
     
     func didTapGetFollowersButton(for user: User) {
         dismiss(animated: true)
-        delegate.didRequestFollowes(with: user.login)
+        delegate.didRequestFollowers(with: user.login)
     }
     
     

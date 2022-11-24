@@ -8,7 +8,7 @@
 import UIKit
 
 protocol FollowersListVCDelegate: AnyObject {
-    func didRequestFollowes(with username: String)
+    func didRequestFollowers(with username: String)
 }
 
 class FollowersListVC: UIViewController {
@@ -49,17 +49,43 @@ class FollowersListVC: UIViewController {
     }
     
     @objc func saveTapped() {
-        print("Save tapped")
+        presentLoadingScreen()
+        NetworkManager.shared.getUserInfo(for: username) { [weak self] result in
+            guard let self = self else { return }
+            self.dismissLoadingScreen()
+            switch result {
+            case .success(let user):
+                let favorite = Follower(login: user.login, avatarURL: user.avatarURL)
+                
+                PersistanceManager.shared.updateWith(favorite: favorite, actionType: .add) { [weak self] error in
+                    guard let self = self else { return }
+                    if let error = error {
+                        if error == .alreadyInFavorites {
+                            self.presentAlert(title: "Unable to favorite", message: "You have already favorited this user.", buttonTitle: "Okay")
+                        }
+                        else {
+                            self.presentAlert(title: "Something went wrong", message: error.rawValue, buttonTitle: "Okay")
+                        }
+                    }
+                    else {
+                        self.presentAlert(title: "Success!", message: "You have sucessfully favorited this user.", buttonTitle: "Okay")
+                    }
+                }
+            case .failure(let error):
+                self.presentAlert(title: "Something went wrong", message: error.rawValue, buttonTitle: "Okay")
+            }
+        }
     }
     
     @objc func getUserInfoTapped() {
-        getUsersInfo(username: self.username)
+        getUsersInfo(username: self.username, isTheUserItself: true)
     }
     
-    func getUsersInfo(username: String) {
+    func getUsersInfo(username: String, isTheUserItself: Bool) {
         let vc = UserInfoVC()
         vc.delegate = self
         vc.username = username
+        vc.isTheUserItself = isTheUserItself
         let navControlller = UINavigationController(rootViewController: vc)
         let appereance = UINavigationBarAppearance()
         appereance.configureWithDefaultBackground()
@@ -94,7 +120,7 @@ class FollowersListVC: UIViewController {
             case .success(let newFollowers):
                 if newFollowers.count <= 0{
                     print("no followers")
-                    self.showEmptyStateView()
+                    self.showEmptyStateView(message: "The user has no followers.\n Go follow him.")
                 }
                 if newFollowers.count < 100 {
                     print("no more followers")
@@ -141,7 +167,7 @@ extension FollowersListVC: UICollectionViewDelegate {
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let currentFollowers = isSearching ? filteredFollowers : followers
-        getUsersInfo(username: currentFollowers[indexPath.row].login)
+        getUsersInfo(username: currentFollowers[indexPath.row].login, isTheUserItself: false)
     }
 }
 
@@ -161,7 +187,7 @@ extension FollowersListVC: UISearchResultsUpdating, UISearchBarDelegate {
 }
 
 extension FollowersListVC: FollowersListVCDelegate {
-    func didRequestFollowes(with username: String) {
+    func didRequestFollowers(with username: String) {
         self.username = username
         title = username
         currentPage = 1

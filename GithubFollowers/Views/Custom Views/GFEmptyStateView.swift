@@ -8,7 +8,7 @@
 import UIKit
 
 class GFEmptyStateView: UIView {
-    let title = GFTitleLabel(alignment: .center, fontSize: 30, title: "The user has no followers.\n Go follow him.")
+    let title = GFTitleLabel(alignment: .center, fontSize: 30, title: "")
     let bgImageView = UIImageView()
     
     let padding: CGFloat = 20
@@ -19,6 +19,13 @@ class GFEmptyStateView: UIView {
         configure()
     }
     
+    init(message: String) {
+        super.init(frame: .zero)
+        backgroundColor = .systemBackground
+        configure()
+        title.text = message
+    }
+    
     private func configure() {
         title.translatesAutoresizingMaskIntoConstraints = false
         bgImageView.translatesAutoresizingMaskIntoConstraints = false
@@ -26,6 +33,7 @@ class GFEmptyStateView: UIView {
         addSubview(title)
         addSubview(bgImageView)
         
+        title.textColor = .tertiaryLabel
         title.numberOfLines = 2
         bgImageView.image = UIImage(named: "empty-state-logo")
         

@@ -14,7 +14,7 @@ class GFFollowersItemVC: GFItemInfoVC {
 
         infoView1.set(infoType: .followers, count: user.followers)
         infoView2.set(infoType: .following, count: user.following)
-        button.set(title: "Go github page", backgroundColor: .systemGreen)
+        button.set(title: "Get followers", backgroundColor: .systemGreen)
     }
     
     override func buttonTapped() {

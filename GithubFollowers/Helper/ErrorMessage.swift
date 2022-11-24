@@ -11,6 +11,8 @@ enum ErrorMessage: String, Error {
     case invalidUsername = "The username created an invalid request. Please try again."
     case unableToComplete = "Unable to complete your request. Please check your internet connection."
     case invalidResponse = "Invalid response from the server. Please try again."
-    case invalidData = "The data received from the server was invalid. Please try again"
-    case decodingData = "Error while decoding data"
+    case invalidData = "The data received from the server was invalid. Please try again."
+    case decodingData = "Error while decoding data."
+    case unableToFavorite = "An error occured while favoriting the user. Please try again."
+    case alreadyInFavorites = "The user is already in favorites."
 }
