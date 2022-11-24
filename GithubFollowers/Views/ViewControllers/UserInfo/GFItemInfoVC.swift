@@ -26,6 +26,7 @@ class GFItemInfoVC: UIViewController {
 
     }
     
+    //MARK: - Configure UI Elements
     private func configure() {
         let padding: CGFloat = 20
         view.layer.cornerRadius = 20

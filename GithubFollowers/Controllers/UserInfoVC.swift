@@ -29,15 +29,9 @@ class UserInfoVC: GFDataLoadingVC {
         configureUI()
         getUserInfo()
         layoutUI()
-        print(isTheUserItself)
-        
-    }
-    private func configureUI() {
-        view.backgroundColor = .systemBackground
-        let rightButton = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(dismissVC))
-        navigationItem.rightBarButtonItem = rightButton
     }
     
+    //MARK: - Get User Info Networking Call
     private func getUserInfo() {
         presentLoadingScreen()
         NetworkManager.shared.getUserInfo(for: username) { [weak self] result in
@@ -48,12 +42,19 @@ class UserInfoVC: GFDataLoadingVC {
                 DispatchQueue.main.async {
                     self.configureUIElements(user: user)
                 }
-            case .failure(let error):
-                print(error.rawValue)
+            case .failure(_):
                 self.presentAlert(title: "Something went wrong", message: "Unable to get info for \(String(describing: self.username!)). Please try again", buttonTitle: "Okay")
             }
         }
     }
+    
+    //MARK: - Configure UI Elements
+    private func configureUI() {
+        view.backgroundColor = .systemBackground
+        let rightButton = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(dismissVC))
+        navigationItem.rightBarButtonItem = rightButton
+    }
+    
     private func configureUIElements(user: User) {
         let repoItemVC = GFRepoItemVC(user: user)
         repoItemVC.delegate = self
@@ -63,15 +64,17 @@ class UserInfoVC: GFDataLoadingVC {
         
         self.add(childVC: GFUserInfoHeaderVC(user: user), to: self.headerContainer)
         self.add(childVC: repoItemVC, to: self.itemView1)
+        
         if !isTheUserItself {
             self.add(childVC: followersItemVC, to: self.itemView2)
         }
+        
         self.dateLabel.text = "Github since \(user.createdAt.convertToMonthYear())"
     }
+    
     private func layoutUI() {
         let padding: CGFloat = 20
-        let itemSpacing: CGFloat = 30
-
+        let itemSpacing: CGFloat = 20
         
         for item in [headerContainer, itemView1, itemView2, dateLabel] {
             view.addSubview(item)
@@ -81,8 +84,10 @@ class UserInfoVC: GFDataLoadingVC {
                 item.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -padding)
             ])
         }
+        
         view.addSubview(headerContainer)
         headerContainer.translatesAutoresizingMaskIntoConstraints = false
+        
         NSLayoutConstraint.activate([
             headerContainer.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: padding),
             headerContainer.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.2),
@@ -94,6 +99,7 @@ class UserInfoVC: GFDataLoadingVC {
             itemView2.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.25),
             
         ])
+        
         if !isTheUserItself
         {
             dateLabel.topAnchor.constraint(equalTo: itemView2.bottomAnchor, constant: 10).isActive = true
@@ -109,7 +115,7 @@ class UserInfoVC: GFDataLoadingVC {
         containerView.addSubview(childVC.view)
         childVC.view.frame = containerView.bounds
         childVC.didMove(toParent: self)
-   
+        
     }
     @objc func dismissVC() {
         dismiss(animated: true)
@@ -123,8 +129,6 @@ extension UserInfoVC: UserInfoVCDelegate {
             return
         }
         presentSafariVC(with: url)
-
-        
     }
     
     func didTapGetFollowersButton(for user: User) {

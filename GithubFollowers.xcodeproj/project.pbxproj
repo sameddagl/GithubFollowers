@@ -42,7 +42,6 @@
 		2CC6346F292D2C5800CBC1F4 /* GFItemInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CC6346E292D2C5800CBC1F4 /* GFItemInfoView.swift */; };
 		2CC63471292D2EE600CBC1F4 /* GFItemInfoVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CC63470292D2EE600CBC1F4 /* GFItemInfoVC.swift */; };
 		2CC63477292D3BBD00CBC1F4 /* Date+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CC63476292D3BBD00CBC1F4 /* Date+Extension.swift */; };
-		2CC63479292D401F00CBC1F4 /* String+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CC63478292D401F00CBC1F4 /* String+Extension.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -83,7 +82,6 @@
 		2CC6346E292D2C5800CBC1F4 /* GFItemInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GFItemInfoView.swift; sourceTree = "<group>"; };
 		2CC63470292D2EE600CBC1F4 /* GFItemInfoVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GFItemInfoVC.swift; sourceTree = "<group>"; };
 		2CC63476292D3BBD00CBC1F4 /* Date+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+Extension.swift"; sourceTree = "<group>"; };
-		2CC63478292D401F00CBC1F4 /* String+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Extension.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -199,7 +197,6 @@
 			children = (
 				2CA9DC102923EBC4009538D8 /* UIViewController+Extension.swift */,
 				2CC63476292D3BBD00CBC1F4 /* Date+Extension.swift */,
-				2CC63478292D401F00CBC1F4 /* String+Extension.swift */,
 				2C2B8E52292F80EC0064148E /* UITableView+Extension.swift */,
 			);
 			path = Extensions;
@@ -355,7 +352,6 @@
 				2CC6346F292D2C5800CBC1F4 /* GFItemInfoView.swift in Sources */,
 				2C2B8E4F292E8D500064148E /* GFFavoriteCell.swift in Sources */,
 				2CC63465292D00C700CBC1F4 /* User.swift in Sources */,
-				2CC63479292D401F00CBC1F4 /* String+Extension.swift in Sources */,
 				2CC6346D292D155500CBC1F4 /* Constants.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

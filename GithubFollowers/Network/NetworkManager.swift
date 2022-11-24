@@ -13,6 +13,7 @@ class NetworkManager {
     private let cache = NSCache<NSString, UIImage>()
     private let baseURL = "https://api.github.com"
     
+    //MARK: - Get followers
     func getFollowers(username: String, page: Int, completion: @escaping(Result<[Follower], ErrorMessage>) -> Void) {
         let endPoint = baseURL + "/users/\(username)/followers?per_page=100&page=\(page)"
         
@@ -44,13 +45,13 @@ class NetworkManager {
             catch{
                 completion(.failure(.decodingData))
             }
-            
         }.resume()
     }
+    
+    //MARK: - Get User Info
     func getUserInfo(for username: String, completion: @escaping(Result<User, ErrorMessage>) -> Void) {
         let endPoint = baseURL + "/users/\(username)"
-        print(endPoint)
-        
+
         guard let url = URL(string: endPoint) else {
             completion(.failure(.invalidUsername))
             return
@@ -79,13 +80,13 @@ class NetworkManager {
                 completion(.success(decodedData))
             }
             catch{
-                print(error)
                 completion(.failure(.decodingData))
             }
         }.resume()
     }
     
-    func getProfileImage(avatarURL: String, completion: @escaping(UIImage?) -> Void) {
+    //MARK: - Download avatar image
+    func downloadAvatarImage(avatarURL: String, completion: @escaping(UIImage?) -> Void) {
         let url = URL(string: avatarURL)!
         
         let key = NSString(string: avatarURL)

@@ -31,7 +31,7 @@ class GFAlertVC: UIViewController {
         configureElements()
     }
     
-    
+    //MARK: - Configure Container View
     private func configureContainerView() {
         view.addSubview(containerView)
         containerView.translatesAutoresizingMaskIntoConstraints = false
@@ -49,6 +49,7 @@ class GFAlertVC: UIViewController {
         ])
     }
     
+    //MARK: - Configure UI Elements
     private func configureElements() {
         containerView.addSubview(titleLabel)
         containerView.addSubview(messageLabel)
@@ -73,7 +74,6 @@ class GFAlertVC: UIViewController {
             messageLabel.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: padding),
             messageLabel.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -padding),
             messageLabel.bottomAnchor.constraint(lessThanOrEqualTo: dismissButton.topAnchor, constant: padding),
-            
         ])
         
     }

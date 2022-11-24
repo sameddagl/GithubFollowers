@@ -8,7 +8,6 @@
 import UIKit
 
 extension UITableView {
-    
     func removeExcessRows() {
         self.tableFooterView = UIView(frame: .zero)
     }

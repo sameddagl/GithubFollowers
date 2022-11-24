@@ -14,7 +14,6 @@ class TabBarVC: UITabBarController {
         view.backgroundColor = .systemBackground
         
         configure()
-
     }
     
     private func configure() {
@@ -33,6 +32,7 @@ class TabBarVC: UITabBarController {
         UINavigationBar.appearance().tintColor = .systemGreen
     }
     
+    //MARK: - Create Search Nav Controller
     private func createSearchNavControllers() -> UINavigationController {
         let vc = SearchVC()
         vc.title = "Search"
@@ -42,7 +42,7 @@ class TabBarVC: UITabBarController {
         navController.tabBarItem = UITabBarItem(tabBarSystemItem: .search, tag: 0)
 
         let appereance = UINavigationBarAppearance()
-        appereance.configureWithTransparentBackground()
+        appereance.configureWithOpaqueBackground()
         
         if #available(iOS 15.0, *){
             navController.navigationBar.scrollEdgeAppearance = appereance
@@ -53,6 +53,8 @@ class TabBarVC: UITabBarController {
         
         return navController
     }
+    
+    //MARK: - Create Favorites Nav Controller
     private func createFavoritesNavControllers() -> UINavigationController {
         let vc = FavoritesListVC()
         vc.title = "Favorites"

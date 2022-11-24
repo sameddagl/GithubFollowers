@@ -23,31 +23,37 @@ class FavoritesListVC: GFDataLoadingVC {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         getFavorites()
-
     }
+    
+    //MARK: - Get Favorites Networking Call
     private func getFavorites() {
         presentLoadingScreen()
         PersistanceManager.shared.retrieveData { [weak self] result in
             guard let self = self else { return }
             self.dismissLoadingScreen()
             switch result {
-            case .success(let followers):
-                if followers.isEmpty {
-                    self.showEmptyStateView(message: "No favorites.")
-                }
-                else {
-                    self.favorites = followers
-                    DispatchQueue.main.async {
-                        self.tableView.reloadData()
-                        self.view.bringSubviewToFront(self.tableView)
-                    }
-                }
+            case .success(let favorites):
+                self.updateUI(with: favorites)
             case .failure(let error):
                 self.presentAlert(title: "Something went wrong", message: error.rawValue, buttonTitle: "Okay")
             }
         }
     }
     
+    func updateUI(with favorites: [Follower]) {
+        if favorites.isEmpty {
+            self.showEmptyStateView(message: "No favorites.")
+        }
+        else {
+            self.favorites = favorites
+            DispatchQueue.main.async {
+                self.tableView.reloadData()
+                self.view.bringSubviewToFront(self.tableView)
+            }
+        }
+    }
+    
+    //MARK: - Configure UI Elements
     private func configureTableView() {
         tableView = UITableView(frame: view.bounds)
         view.addSubview(tableView)
@@ -58,7 +64,6 @@ class FavoritesListVC: GFDataLoadingVC {
         tableView.removeExcessRows()
         
         tableView.register(GFFavoriteCell.self, forCellReuseIdentifier: GFFavoriteCell.reuseIdentifier)
-        
     }
 }
 
@@ -66,15 +71,18 @@ extension FavoritesListVC: UITableViewDataSource, UITableViewDelegate {
     func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return favorites.count
     }
+    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: GFFavoriteCell.reuseIdentifier, for: indexPath) as! GFFavoriteCell
         cell.set(favorite: favorites[indexPath.row])
         return cell
     }
     
+    //MARK: - Selection Control
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.cellForRow(at: indexPath)?.isSelected = false
         let vc = UserInfoVC()
@@ -89,6 +97,7 @@ extension FavoritesListVC: UITableViewDataSource, UITableViewDelegate {
         present(navControlller, animated: true)
     }
 
+    //MARK: - Row Editing
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         guard editingStyle == .delete else { return }
         

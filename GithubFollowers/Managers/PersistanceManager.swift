@@ -19,6 +19,7 @@ struct PersistanceManager {
         static let favorites = "favorites"
     }
     
+    //MARK: - Update the favorites list
     func updateWith(favorite: Follower, actionType: PersistanceActionType, completion: @escaping(ErrorMessage?) -> Void ) {
         retrieveData { result in
             switch result {
@@ -29,25 +30,25 @@ struct PersistanceManager {
                         completion(.alreadyInFavorites)
                         return
                     }
+                    
                     favorites.append(favorite)
                 case .remove:
                     favorites.removeAll { $0.login == favorite.login }
                 }
-                completion(save(favorites: favorites))
                 
+                completion(save(favorites: favorites))
             case .failure(let error):
                 completion(error)
             }
         }
     }
     
-    
+    //MARK: - Retrieve the favorite list
     func retrieveData(completion: @escaping(Result<[Follower], ErrorMessage>) -> Void)
     {
         guard let favoritesData = defaults.object(forKey: Keys.favorites) as? Data else {
             completion(.success([]))
             return
-            
         }
         
         do {
@@ -60,6 +61,7 @@ struct PersistanceManager {
         
     }
     
+    //MARK: - Save the favorites list
     private func save(favorites: [Follower]) -> ErrorMessage? {
         do {
             let encodedData = try JSONEncoder().encode(favorites)

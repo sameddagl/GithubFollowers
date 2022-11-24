@@ -31,6 +31,7 @@ class GFItemInfoView: UIView {
         iconImageView.contentMode = .scaleAspectFill
     }
     
+    //MARK: - Configure UI Elements
     private func configure() {
         let topStack = UIStackView(arrangedSubviews: [iconImageView, titleLabel])
         topStack.distribution = .fill
@@ -54,9 +55,9 @@ class GFItemInfoView: UIView {
             mainStack.trailingAnchor.constraint(equalTo: trailingAnchor),
             mainStack.bottomAnchor.constraint(equalTo: bottomAnchor)
         ])
-        
     }
     
+    //MARK: - Set Function
     func set(infoType: ItemInfoType, count: Int) {
         switch infoType {
         case .repos:
@@ -73,7 +74,6 @@ class GFItemInfoView: UIView {
             titleLabel.text = "Following"
         }
         countLabel.text = String(count)
-
     }
 
     required init?(coder: NSCoder) {

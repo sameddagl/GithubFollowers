@@ -27,8 +27,6 @@ class GFDataLoadingVC: UIViewController {
         ])
         
         activityIndicator.startAnimating()
-        
-        
     }
     
     func dismissLoadingScreen() {

@@ -16,17 +16,20 @@ class GFFollowerCell: UICollectionViewCell {
     override init(frame: CGRect) {
         super.init(frame: frame)
         configureImageView()
+        configureTitleLabel()
     }
     
+    //MARK: - Set Function
     func set(_ follower: Follower) {
         nameTitle.text = follower.login
-        NetworkManager.shared.getProfileImage(avatarURL: follower.avatarURL) { [weak self] image in
+        NetworkManager.shared.downloadAvatarImage(avatarURL: follower.avatarURL) { [weak self] image in
             DispatchQueue.main.async {
                 self?.avatarImageView.image = image
             }
         }
     }
     
+    //MARK: - Configurations
     private func configureImageView() {
         addSubview(avatarImageView)
                 
@@ -36,7 +39,6 @@ class GFFollowerCell: UICollectionViewCell {
             avatarImageView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -padding),
             avatarImageView.heightAnchor.constraint(equalTo: avatarImageView.widthAnchor)
         ])
-        configureTitleLabel()
     }
     
     private func configureTitleLabel() {

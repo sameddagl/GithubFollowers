@@ -31,7 +31,6 @@ class GFTitleLabel: UILabel {
         textColor = .label
         
         numberOfLines = 1
-        
     }
     
     required init?(coder: NSCoder) {

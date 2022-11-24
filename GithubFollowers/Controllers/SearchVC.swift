@@ -24,6 +24,7 @@ class SearchVC: UIViewController {
         navigationController?.setNavigationBarHidden(true, animated: true)
     }
     
+    //MARK: - Configure UI Elements
     func configureUI() {
         nameTextField.delegate = self
         let recognizer = UITapGestureRecognizer(target: self, action: #selector(tappedOnScreen))
@@ -53,7 +54,6 @@ class SearchVC: UIViewController {
     func configureTextField() {
         view.addSubview(nameTextField)
         
-        
         NSLayoutConstraint.activate([
             nameTextField.topAnchor.constraint(equalTo: logoImageView.bottomAnchor, constant: 50),
             nameTextField.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 50),
@@ -69,7 +69,7 @@ class SearchVC: UIViewController {
             actionButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             actionButton.heightAnchor.constraint(equalToConstant: 50),
             actionButton.widthAnchor.constraint(equalTo: nameTextField.widthAnchor),
-            actionButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -50)
+            actionButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -30)
         ])
         
         actionButton.addTarget(self, action: #selector(buttonTapped), for: .touchUpInside)
@@ -90,9 +90,11 @@ extension SearchVC: UITextFieldDelegate {
     @objc func tappedOnScreen() {
         view.endEditing(true)
     }
+    
     func textFieldShouldEndEditing(_ textField: UITextField) -> Bool {
         return true
     }
+    
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
         buttonTapped()

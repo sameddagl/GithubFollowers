@@ -22,15 +22,17 @@ class GFFavoriteCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
+    //MARK: - Set Function
     func set(favorite: Follower) {
         title.text = favorite.login
-        NetworkManager.shared.getProfileImage(avatarURL: favorite.avatarURL) { [weak self] image in
+        NetworkManager.shared.downloadAvatarImage(avatarURL: favorite.avatarURL) { [weak self] image in
             DispatchQueue.main.async {
                 self?.avatarImageView.image = image
             }
         }
     }
     
+    //MARK: - Configure UI Elements
     private func configure() {
         let padding: CGFloat = 20
         addSubview(avatarImageView)
@@ -47,7 +49,6 @@ class GFFavoriteCell: UITableViewCell {
             title.centerYAnchor.constraint(equalTo: centerYAnchor),
             title.leadingAnchor.constraint(equalTo: avatarImageView.trailingAnchor, constant: padding),
             title.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -padding)
-            
         ])
     }
 

@@ -25,6 +25,7 @@ class GFEmptyStateView: UIView {
         title.text = message
     }
     
+    //MARK: - Configure UI Elements
     private func configure() {
         title.translatesAutoresizingMaskIntoConstraints = false
         bgImageView.translatesAutoresizingMaskIntoConstraints = false
