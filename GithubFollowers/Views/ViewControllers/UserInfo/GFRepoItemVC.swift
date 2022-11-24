@@ -14,7 +14,7 @@ class GFRepoItemVC: GFItemInfoVC {
         
         infoView1.set(infoType: .repos, count: user.publicRepos)
         infoView2.set(infoType: .gists, count: user.publicGists)
-        button.set(title: "Go github page", backgroundColor: .systemBlue)
+        button.set(image: SFSymbols.repo ,title: "Github profile", backgroundColor: .systemPurple)
     }
     
     override func buttonTapped() {

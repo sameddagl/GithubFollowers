@@ -23,7 +23,6 @@ class FollowersListVC: GFDataLoadingVC {
     
     var currentPage = 1
     var hasMoreFollowers = true
-    var canLoadMoreFollowers = true
     var isSearching = false
     
     init(username: String) {

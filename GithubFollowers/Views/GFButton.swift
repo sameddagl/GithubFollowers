@@ -14,23 +14,38 @@ class GFButton: UIButton {
         configure()
     }
     
-    convenience init(title: String) {
+    convenience init(image: String, title: String, backgroundColor: UIColor) {
         self.init(frame: .zero)
-        self.setTitle(title, for: .normal)
+        self.set(image: image, title: title, backgroundColor: backgroundColor)
     }
-    func set(title: String, backgroundColor: UIColor) {
-        setTitle(title, for: .normal)
-        self.backgroundColor = backgroundColor
+    func set(image: String, title: String, backgroundColor: UIColor) {
+        if #available(iOS 15, *) {
+            configuration?.title = title
+            configuration?.imagePadding = 10
+            
+            configuration?.baseBackgroundColor = backgroundColor
+            configuration?.baseForegroundColor = backgroundColor
+            
+            configuration?.imagePlacement = .leading
+            configuration?.image = UIImage(systemName: image)
+        }
+        else {
+            setTitle(title, for: .normal)
+            self.backgroundColor = backgroundColor
+        }
     }
     
     private func configure() {
         translatesAutoresizingMaskIntoConstraints = false
-        
-        backgroundColor = .systemGreen
-        
-        layer.cornerRadius = 10
-        
-        titleLabel?.font = .preferredFont(forTextStyle: .headline)
+
+        if #available(iOS 15, *) {
+            configuration = .tinted()
+            configuration?.cornerStyle = .large
+        }
+        else {
+            layer.cornerRadius = 10
+            titleLabel?.font = .preferredFont(forTextStyle: .headline)
+        }
     }
     
     required init?(coder: NSCoder) {

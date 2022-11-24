@@ -19,7 +19,7 @@ class TabBarVC: UITabBarController {
     private func configure() {
         let tabBarAppereance = UITabBarAppearance()
         tabBarAppereance.configureWithOpaqueBackground()
-        
+
         if #available(iOS 15.0, *) {
             tabBar.scrollEdgeAppearance = tabBarAppereance
         } else {

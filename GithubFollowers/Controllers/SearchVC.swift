@@ -10,7 +10,7 @@ import UIKit
 class SearchVC: UIViewController {
     let logoImageView = UIImageView()
     let nameTextField = GFTextField(placeholder: "Enter a username")
-    let actionButton = GFButton(title: "Get Followers")
+    let actionButton = GFButton(image: SFSymbols.following ,title: "Get Followers", backgroundColor: .systemGreen)
     
     override func viewDidLoad() {
         super.viewDidLoad()

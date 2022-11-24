@@ -12,7 +12,7 @@ class GFAlertVC: UIViewController {
     
     let titleLabel = GFTitleLabel(alignment: .center, fontSize: 20, title: "Error")
     let messageLabel = GFBodyLabel(alignment: .center, text: "An error occured")
-    let dismissButton = GFButton(title: "Okay")
+    let dismissButton = GFButton(image: "", title: "Okay", backgroundColor: .systemPink)
     
     
     override func viewDidLoad() {
@@ -55,7 +55,6 @@ class GFAlertVC: UIViewController {
         containerView.addSubview(messageLabel)
         containerView.addSubview(dismissButton)
         
-        dismissButton.backgroundColor = .systemPink
         dismissButton.addTarget(self, action: #selector(dismissAlertVC), for: .touchUpInside)
         
         let padding: CGFloat = 20
